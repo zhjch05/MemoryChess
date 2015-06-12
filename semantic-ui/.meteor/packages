@@ -14,3 +14,5 @@ service-configuration
 semantic:ui-css
 useraccounts:semantic-ui
 less
+twbs:bootstrap
+ian:accounts-ui-bootstrap-3
