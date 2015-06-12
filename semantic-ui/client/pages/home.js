@@ -1,6 +1,5 @@
 Template.home.rendered = function(){
-	var board,
-	  game = new Chess()/*,
+	var game = new Chess()/*,
 	  statusEl = $('#status'),
 	  fenEl = $('#fen'),
 	  pgnEl = $('#pgn')*/;
@@ -75,7 +74,20 @@ Template.home.rendered = function(){
 	  onDrop: onDrop,
 	  onSnapEnd: onSnapEnd
 	};
-	board = new ChessBoard('board', cfg);
-
+	myboard = new ChessBoard('board', cfg);
 	updateStatus();
-}
+};
+
+
+Template.home.events({
+	'click #btn1':function(event){
+		alert("click");
+		myboard.move('e2-e4');
+	},
+	'submit #homeform': function(event){
+		event.preventDefault();
+		var cmd = event.target.inputcommand.value;
+		//parse goes there
+		alert(cmd);
+	}
+});
