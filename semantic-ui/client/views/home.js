@@ -1,3 +1,3 @@
 Template.home.rendered = function(){
-	var board = new ChessBoard('board');
+	var board = new ChessBoard('board','start');
 }
