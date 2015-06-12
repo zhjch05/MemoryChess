@@ -24,7 +24,6 @@ Template.home.rendered = function(){
 
 	  // illegal move
 	  if (move === null) return 'snapback';
-
 	  updateStatus();
 	};
 
@@ -88,6 +87,20 @@ Template.home.events({
 		event.preventDefault();
 		var cmd = event.target.inputcommand.value;
 		//parse goes there
+		var alpha = ['a','b','c','d','e','f','g','h']
+		var num = ['1', '2' , '3' , '4', '5' , '6' , '7' , '8'];
+		var result,idx=0;
+		for(var i = 0;i<alpha.length;i++)
+		{
+			for(var j = 0;j<num.length;j++)
+			{
+				result[idx++]=alpha[i]+num[j];
+				console.log(result[idx-1]);
+			}
+		}
+		//test if legal
+
+		//move it
 		alert(cmd);
 	}
 });
