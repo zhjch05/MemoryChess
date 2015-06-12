@@ -5,4 +5,4 @@ A memory chess website built with meteor
 John Martinez
 Jincheng Zhang
 Chi Zhang
-ABC
+ABCdwqdwq
