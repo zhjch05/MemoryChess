@@ -1,7 +1,4 @@
 Template.home.rendered = function(){
-<<<<<<< HEAD
-	var board = new ChessBoard('board','start');
-=======
 	var board,
 	  game = new Chess()/*,
 	  statusEl = $('#status'),
@@ -81,5 +78,4 @@ Template.home.rendered = function(){
 	board = new ChessBoard('board', cfg);
 
 	updateStatus();
->>>>>>> master
 }
