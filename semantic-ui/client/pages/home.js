@@ -90,7 +90,7 @@ Template.home.events({
 		//create dict
 		var alpha = ['a','b','c','d','e','f','g','h']
 		var num = ['1', '2' , '3' , '4', '5' , '6' , '7' , '8'];
-		var result=[],idx=0;
+		var result=[],idx=0,dict="";
 		for(var i = 0;i<alpha.length;i++)
 		{
 			for(var j = 0;j<num.length;j++)
@@ -99,11 +99,114 @@ Template.home.events({
 			}
 		}
 		//split/trim
-		cmd=cmd.trim();
+		cmd = cmd.trim();
+		cmd = cmd.toLowerCase();
 		if(cmd.indexOf("to")>-1)
+		{
+			var string1 = cmd.substring(0,cmd.indexOf("to"));
+			var string2 = cmd.substring(cmd.indexOf("to")+2);
+			for(var i=0;i<result.length;i++)
+			{
+				if(string1.indexOf(result[i])>-1)
+				{
+					dict+=result[i];
+					dict+="-";
+					break;
+				}
+			}
+			if(dict.indexOf("-")<=-1)
+			{
+				alert("Failed");
+				console.log("Failure. dict="+dict);
+			}
+			var indicator=false;
+			for(var i=0;i<result.length;i++)
+			{
+				if(string2.indexOf(result[i])>-1)
+				{
+					dict+=result[i];
+					indicator = true;
+					break;
+				}
+			}
+			if(!indicator)
+			{
+				alert("Failed");
+				console.log("Failure. dict="+dict);
+			}
+		}
+		else if(cmd.indexOf("takes")>-1)
+		{
+			var string1 = cmd.substring(0,cmd.indexOf("takes"));
+			var string2 = cmd.substring(cmd.indexOf("takes")+2);
+			for(var i=0;i<result.length;i++)
+			{
+				if(string1.indexOf(result[i])>-1)
+				{
+					dict+=result[i];
+					dict+="-";
+					break;
+				}
+			}
+			if(dict.indexOf("-")<=-1)
+			{
+				alert("Failed");
+				console.log("Failure. dict="+dict);
+			}
+			var indicator=false;
+			for(var i=0;i<result.length;i++)
+			{
+				if(string2.indexOf(result[i])>-1)
+				{
+					dict+=result[i];
+					indicator = true;
+					break;
+				}
+			}
+			if(!indicator)
+			{
+				alert("Failed");
+				console.log("Failure. dict="+dict);
+			}
+		}
+		else if(cmd.indexOf("take")>-1)
+		{
+			var string1 = cmd.substring(0,cmd.indexOf("take"));
+			var string2 = cmd.substring(cmd.indexOf("take")+4);
+			for(var i=0;i<result.length;i++)
+			{
+				if(string1.indexOf(result[i])>-1)
+				{
+					dict+=result[i];
+					dict+="-";
+					break;
+				}
+			}
+			if(dict.indexOf("-")<=-1)
+			{
+				alert("Failed");
+				console.log("Failure. dict="+dict);
+			}
+			var indicator=false;
+			for(var i=0;i<result.length;i++)
+			{
+				if(string2.indexOf(result[i])>-1)
+				{
+					dict+=result[i];
+					indicator = true;
+					break;
+				}
+			}
+			if(!indicator)
+			{
+				alert("Failed");
+				console.log("Failure. dict="+dict);
+			}
+		}
+		console.log("Dict is now ->  :"+dict);
 		//test if legal
 
 		//move it
-		alert(cmd);
+		//alert(cmd);
 	}
 });
