@@ -1,5 +1,7 @@
 Meteor.publish("thefenboards",function(){return FenBoards.find();});
 Meteor.publish("theprofiles",function(){return Profiles.find();});
+Meteor.publish("theSteps",function(){return Steps.find();});
+
 
 Meteor.publish("userData", function(){
 	if (this.userId){

@@ -4,14 +4,59 @@
     		<h1>test</h1>
     		<div id="board" style="width: 400px"></div>
     	</div>
-    	<div class="eight wide column">
+    	<div class="chessboard2">
     		<h1>test</h1>
+            <div id="board2" style="width: 400px"></div>
+            <input type="button" class = "ui button" id="setStartBtn" value="Start Position" />
+            <input type="button" class = "ui button" id="setRuyLopezBtn" value="Ruy Lopez" />
+            <input type="button" class = "ui button" id="setRookCheckmateBtn" value="Rook Checkmate" />
+
+            
+
     	</div>
+  	<div class="eight wide column">
+		<div class="column">
+			<div class="container">
+			<table class="ui table">
+				<thead>
+					<tr>
+						<th>Steps</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{> allSteps}}
+				</tbody>
+            </table>
+            </div>
+		  </div>
+
+    </div>
     	<div class="eight wide column">
     		<h1>test</h1>
-    	</div>
-    	<div class="eight wide column">
-    		<h1>test</h1>
+            <div class="column">
+                {{> formSteps}}
+		    </div>
     	</div>
     </div>
+</template>
+
+<template name="formSteps">
+	<form class="ui form" id="editform">
+			<div class="field">
+				<label>Steps</label>
+				<div class="field">
+				    <input type="text" name="Steps" placeholder="Steps">
+				</div>
+            </div>
+		<input type="submit" class="ui submit button" value="Move!">
+	</form>
+</template>
+
+
+<template name="allSteps">
+    {{#each Steps}}
+		<tr>
+			<td>{{movement}}</td>
+		</tr>
+	{{/each}}
 </template>
