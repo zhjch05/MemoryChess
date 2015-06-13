@@ -1,5 +1,5 @@
 Template.home.rendered = function(){
-	var game = new Chess()/*,
+	game = new Chess()/*,
 	  statusEl = $('#status'),
 	  fenEl = $('#fen'),
 	  pgnEl = $('#pgn')*/;
@@ -30,10 +30,11 @@ Template.home.rendered = function(){
 	// update the board position after the piece snap 
 	// for castling, en passant, pawn promotion
 	var onSnapEnd = function() {
-	  board.position(game.fen());
+	  myboard.position(game.fen());
 	};
 
-	var updateStatus = function() {
+	updateStatus = function() {
+	  console.log("updateStatus");
 	  var status = '';
 
 	  var moveColor = 'White';
@@ -90,7 +91,7 @@ Template.home.events({
 		//create dict
 		var alpha = ['a','b','c','d','e','f','g','h']
 		var num = ['1', '2' , '3' , '4', '5' , '6' , '7' , '8'];
-		var result=[],idx=0,dict="";
+		var result=[],idx=0,dict="",piecefrom='',pieceto='';
 		for(var i = 0;i<alpha.length;i++)
 		{
 			for(var j = 0;j<num.length;j++)
@@ -101,6 +102,7 @@ Template.home.events({
 		//split/trim
 		cmd = cmd.trim();
 		cmd = cmd.toLowerCase();
+		cmd = cmd.replace(/\s+/g, '');
 		if(cmd.indexOf("to")>-1)
 		{
 			var string1 = cmd.substring(0,cmd.indexOf("to"));
@@ -111,6 +113,7 @@ Template.home.events({
 				{
 					dict+=result[i];
 					dict+="-";
+					piecefrom=result[i];
 					break;
 				}
 			}
@@ -126,10 +129,11 @@ Template.home.events({
 				{
 					dict+=result[i];
 					indicator = true;
+					pieceto=result[i];
 					break;
 				}
 			}
-			if(!indicator)
+			if(indicator === false)
 			{
 				alert("Failed");
 				console.log("Failure. dict="+dict);
@@ -145,6 +149,7 @@ Template.home.events({
 				{
 					dict+=result[i];
 					dict+="-";
+					piecefrom=result[i];
 					break;
 				}
 			}
@@ -160,10 +165,11 @@ Template.home.events({
 				{
 					dict+=result[i];
 					indicator = true;
+					pieceto=result[i];
 					break;
 				}
 			}
-			if(!indicator)
+			if(indicator === false)
 			{
 				alert("Failed");
 				console.log("Failure. dict="+dict);
@@ -179,6 +185,7 @@ Template.home.events({
 				{
 					dict+=result[i];
 					dict+="-";
+					piecefrom=result[i];
 					break;
 				}
 			}
@@ -194,10 +201,11 @@ Template.home.events({
 				{
 					dict+=result[i];
 					indicator = true;
+					pieceto=result[i];
 					break;
 				}
 			}
-			if(!indicator)
+			if(indicator === false)
 			{
 				alert("Failed");
 				console.log("Failure. dict="+dict);
@@ -205,8 +213,35 @@ Template.home.events({
 		}
 		console.log("Dict is now ->  :"+dict);
 		//test if legal
-
-		//move it
-		//alert(cmd);
+		var piece1=game.get(piecefrom);
+		if(piece1 === null)
+		{
+			alert("No piece there!");
+			return;
+		}
+	  	if(game.game_over() === true)
+	  	{
+	  		alert("Illegal move -- game is already over");
+	  		return;
+	  	}
+	  	else if(piece1.color != game.turn())
+	  	{
+	  		alert("Illegal move -- it is not your turn");	
+	  	}
+	  	else //correct turn
+	  	{
+	  		var move = game.move({
+	    	from: piecefrom,
+	    	to: pieceto,
+	   		promotion: 'q' // NOTE: always promote to a queen for example simplicity
+	  		});
+	  		if (move === null) 
+	  		{
+	  			alert("Illegal move -- no pass");
+	  			return;
+	  		}
+	  		myboard.position(game.fen());
+	  		updateStatus();
+	  	}
 	}
 });
