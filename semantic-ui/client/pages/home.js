@@ -80,13 +80,11 @@ Template.home.rendered = function(){
 
 
 Template.home.events({
-	'click #btn1':function(event){
-		alert("click");
-		myboard.move('e2-e4');
-	},
 	'submit #homeform': function(event){
 		event.preventDefault();
 		var cmd = event.target.inputcommand.value;
+		
+	  	$('#icommand').text("");
 		//parse goes there
 		//create dict
 		var alpha = ['a','b','c','d','e','f','g','h']
