@@ -1,4 +1,17 @@
 Template.home.rendered = function(){
+	//create dict
+	alpha = ['a','b','c','d','e','f','g','h']
+	num = ['1', '2' , '3' , '4', '5' , '6' , '7' , '8'];
+	result=[],idx=0,dict="",piecefrom='',pieceto='';
+	for(var i = 0;i<alpha.length;i++)
+	{
+		for(var j = 0;j<num.length;j++)
+		{
+			result[idx++]=alpha[i]+num[j];
+		}
+	}
+
+	//get rid of the logs things
 	game = new Chess()/*,
 	  statusEl = $('#status'),
 	  fenEl = $('#fen'),
@@ -76,27 +89,93 @@ Template.home.rendered = function(){
 	};
 	myboard = new ChessBoard('board', cfg);
 	updateStatus();
-};
 
 
-Template.home.events({
-	'submit #homeform': function(event){
-		event.preventDefault();
-		var cmd = event.target.inputcommand.value;
-		
-	  	$('#icommand').text("");
-		//parse goes there
-		//create dict
-		var alpha = ['a','b','c','d','e','f','g','h']
-		var num = ['1', '2' , '3' , '4', '5' , '6' , '7' , '8'];
-		var result=[],idx=0,dict="",piecefrom='',pieceto='';
-		for(var i = 0;i<alpha.length;i++)
-		{
-			for(var j = 0;j<num.length;j++)
-			{
-				result[idx++]=alpha[i]+num[j];
+///////////////////////////////////////////////////////////////////////////
+	// VOICE RECOGNITION
+
+	final_transcript = '';
+	var recognizing = false;
+
+	if ('webkitSpeechRecognition' in window) {
+		console.log("webkit is available!");
+		var recognition = new webkitSpeechRecognition();
+	    recognition.continuous = true;
+	    recognition.interimResults = true;
+ 
+	    recognition.onstart = function() {
+	      recognizing = true;
+	    };
+ 
+	    recognition.onerror = function(event) {
+	      console.log(event.error);
+	    };
+ 
+	    recognition.onend = function() {
+	      recognizing = false;
+	    };
+ 
+	    recognition.onresult = function(event) {
+			myevent = event;
+	      var interim_transcript = '';
+	      for (var i = event.resultIndex; i < event.results.length; ++i) {
+			  console.log("i="+i);
+
+			//Stops the dictation if it sees the phrase "stop dictation"
+			if(event.results[i][0].transcript.includes("stop dictation")){
+			  	recognition.stop();
 			}
-		}
+
+	        if (event.results[i].isFinal) {
+
+	          final_transcript += 
+
+	          event.results[i][0].transcript.trim() +".\n";
+			  console.log('final events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+			  var mycmd = final_transcript;
+			  performMove(mycmd);
+	        } else {
+	          interim_transcript += 
+	 
+	          event.results[i][0].transcript;
+			  console.log('interim events.results[i][0].transcript = '+ JSON.stringify(event.results[i][0].transcript));
+
+	        }
+	      }
+	      //final_transcript = capitalize(final_transcript);
+	      final_span.innerHTML = linebreak(final_transcript);
+	      interim_span.innerHTML = linebreak(interim_transcript);
+    	  
+	    };
+	}
+	
+	var two_line = /\n\n/g;
+	var one_line = /\n/g;
+	function linebreak(s) {
+	  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+	}
+ 
+	function capitalize(s) {
+	  return s.replace(s.substr(0,1), function(m) { return m.toUpperCase(); });
+	}
+ 
+	startDictation = function(event) {
+	  if (recognizing) {
+	    recognition.stop();
+	    return;
+	  }
+	  final_transcript = '';
+	  recognition.lang = 'en-US';
+	  recognition.start();
+	  final_span.innerHTML = '';
+	  interim_span.innerHTML = '';
+	}
+
+	performMove = function(MYcmd){
+		
+	  	this.$('#icommand').val('');
+		//parse goes there
+		var cmd = MYcmd;
 		//split/trim
 		cmd = cmd.trim();
 		cmd = cmd.toLowerCase();
@@ -241,5 +320,19 @@ Template.home.events({
 	  		myboard.position(game.fen());
 	  		updateStatus();
 	  	}
+	}
+};
+
+
+Template.home.events({
+
+	'click #start_button': function(event){
+		startDictation(event);
+	},
+
+	'submit #homeform': function(event){
+		var cmd = event.target.inputcommand.value;
+		event.preventDefault();
+		performMove(cmd);
 	}
 });
